@@ -1,4 +1,4 @@
-# 🏃‍♂️ Runner Game
+# 🏃‍♂️ Run-Infinity
 
 A fun, side-scrolling endless runner game built with Pygame!
 
