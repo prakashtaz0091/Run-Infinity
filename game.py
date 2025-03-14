@@ -41,7 +41,7 @@ backgrounds.add(bg_img_1_layer, bg_img_2_layer, bg_img_3_layer, bg_img_4_layer, 
 
 # background music
 pygame.mixer.music.load('./assets/music/bg_ring.mp3')
-pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.set_volume(0.7)
 pygame.mixer.music.play(-1)
 
 
@@ -52,16 +52,24 @@ runner_frames_scaled_down = [ pygame.transform.scale(frame, (frame.get_width() *
 player = Player(runner_frames_scaled_down, x=100, y=SCREEN_HEIGHT - runner_frames_scaled_down[0].get_height()+20, screen_width=SCREEN_WIDTH, screen_height=SCREEN_HEIGHT, scale=0.5)
 
 
+# player jump sound
+jump_sound = pygame.mixer.Sound('./assets/music/jump.wav')
+# jump_sound.set_volume(0.5)
+
+
+
 # obstacle
 cactus = pygame.image.load('./assets/images/cactus.png').convert_alpha()
 obstacle_sf = 0.2
 cactus = pygame.transform.scale(cactus, (cactus.get_width() * obstacle_sf, cactus.get_height() * obstacle_sf))
-obs1 = Obstacle(cactus, x=SCREEN_WIDTH, y=SCREEN_HEIGHT - cactus.get_height(), velocity=7)
-obs2 = Obstacle(cactus, x=SCREEN_WIDTH+randint(400, 500), y=SCREEN_HEIGHT - cactus.get_height(), velocity=7)
-obs3 = Obstacle(cactus, x=obs2.rect.x+randint(400, 500), y=SCREEN_HEIGHT - cactus.get_height(), velocity=7)
-
 obstacles = pygame.sprite.Group()
-obstacles.add(obs1, obs2, obs3)
+def add_obstacles():
+    obs1 = Obstacle(cactus, x=SCREEN_WIDTH, y=SCREEN_HEIGHT - cactus.get_height(), velocity=7)
+    obs2 = Obstacle(cactus, x=obs1.rect.x+randint(400, 500), y=SCREEN_HEIGHT - cactus.get_height(), velocity=7)
+    obs3 = Obstacle(cactus, x=obs2.rect.x+randint(400, 500), y=SCREEN_HEIGHT - cactus.get_height(), velocity=7)
+    obs4 = Obstacle(cactus, x=SCREEN_WIDTH*2, y=SCREEN_HEIGHT - cactus.get_height(), velocity=7)
+    obstacles.add(obs1, obs2, obs3, obs4)
+
 
 
 # Score Board
@@ -92,7 +100,8 @@ while running:
                 running = False
                 
             elif event.key == pygame.K_SPACE:
-                player.jump()        
+                player.jump() 
+                jump_sound.play()       
             
     
     
@@ -117,9 +126,7 @@ while running:
     
     
     if len(obstacles) < 2:
-        new_obstacle = Obstacle(cactus, x=SCREEN_WIDTH+randint(400, 500), y=SCREEN_HEIGHT - cactus.get_height(), velocity=7)
-        new_obstacle2 = Obstacle(cactus, x=new_obstacle.rect.x+randint(400, 600), y=SCREEN_HEIGHT - cactus.get_height(), velocity=7)
-        obstacles.add(new_obstacle, new_obstacle2)
+        add_obstacles()
         score += 10
         score_text = score_font.render(f'score: {score}', True, (255, 255, 255))
         
