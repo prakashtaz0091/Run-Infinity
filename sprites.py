@@ -3,6 +3,22 @@ import pygame
 GRAVITY = 1
 
 
+class Coin(pygame.sprite.Sprite):
+    def __init__(self, image, x, y, velocity=5):
+        super().__init__()
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.velocity = velocity
+        
+    
+    def update(self):
+        self.rect.x -= self.velocity
+        if self.rect.right <= 0:
+            self.kill()
+
+
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, image, x, y, velocity=5):
         super().__init__()
