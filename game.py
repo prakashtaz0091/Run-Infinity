@@ -2,7 +2,9 @@ import pygame
 from sprites import BackgroundLayer, CustomSpriteGroup, Player, Obstacle
 from random import randint
 
+
 pygame.init()
+pygame.mixer.init()
 pygame.font.init()
 
 SCREEN_WIDTH = 1400
@@ -13,7 +15,7 @@ pygame.display.set_caption("Runner")
 running = True
 
 
-
+# Backgrounds
 bg_img_1 = pygame.image.load('./assets/images/Hills Layer 01.png').convert_alpha()
 bg_img_1_layer = BackgroundLayer(bg_img_1, 1, screen_width=SCREEN_WIDTH, screen_height=SCREEN_HEIGHT)
 
@@ -35,6 +37,13 @@ bg_img_6_layer = BackgroundLayer(bg_img_6, 7, screen_width=SCREEN_WIDTH, screen_
 
 backgrounds = CustomSpriteGroup()
 backgrounds.add(bg_img_1_layer, bg_img_2_layer, bg_img_3_layer, bg_img_4_layer, bg_img_5_layer)
+
+
+# background music
+pygame.mixer.music.load('./assets/music/bg_ring.mp3')
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1)
+
 
 # runner or Player
 runner_frames = [ pygame.image.load(f'./assets/runner/skeleton-run_{i}.png').convert_alpha()  for i in range(21)]
